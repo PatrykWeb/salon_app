@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/services/auth_service.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -6,6 +7,13 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  String _email;
+  String _password;
+  String error;
+
+  AuthService _authService = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,11 +26,18 @@ class _RegisterState extends State<Register> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(30.0, 210.0, 30.0, 0.0),
+        padding: EdgeInsets.fromLTRB(30.0, 150.0, 30.0, 0.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(
+                validator: (value) => value.isEmpty ? "Podaj email" : null,
+                onChanged: (value) {
+                  setState(() {
+                    _email = value;
+                  });
+                },
                 cursorColor: Colors.purple,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -39,6 +54,12 @@ class _RegisterState extends State<Register> {
                 height: 20.0,
               ),
               TextFormField(
+                validator: (value) => value.length < 6 ? "Hasło musi mieć minimum 6 znaków" : null,
+                onChanged: (value) {
+                  setState(() {
+                    _password = value;
+                  });
+                },
                 cursorColor: Colors.purple,
                 decoration: InputDecoration(
                   labelText: "Password",
@@ -80,7 +101,23 @@ class _RegisterState extends State<Register> {
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.purple)),
                 ),
-              )
+              ),
+              RaisedButton(
+                onPressed: () async {
+                  if(_formKey.currentState.validate()) {
+                    dynamic result = await _authService.createUserWithEmailAndPassword(_email, _password);
+                    if(result == null) {
+                      setState(() {
+                        error = "Podaj email";
+                      });
+                    } else {
+                      print("Zarejestrowałeś sie poprawnie");
+                    }
+                  }
+                  print(_email);
+                  print(_password);
+                },
+              ),
             ],
           ),
         ),

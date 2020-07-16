@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/services/auth_service.dart';
 
@@ -10,11 +11,12 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+  String email;
+  String password;
+  String errorResult;
+  
   AuthService _authService = AuthService();
 
-  String email = "";
-  String password = "";
-  String error = "";
 
 
   final _formKey = GlobalKey<FormState>();
@@ -39,11 +41,9 @@ class _LoginState extends State<Login> {
           child: Column(
           children: <Widget>[
             TextFormField(
-              validator: (value) => value.isEmpty ? "Wpisz swój email" : null,
+              validator: (value) => value.isEmpty ? "Podaj adres email" : null,
               onChanged: (value) {
-                setState(() {
-                  email = value;
-                });
+                email = value;
               },
               cursorColor: Colors.purple,
               decoration: InputDecoration(
@@ -64,13 +64,13 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 20.0,),
             TextFormField(
-              obscureText: true,
-              validator: (value) => value.length < 6 ? "Twoje hasło musi mieć minimum 6 znaków" : null,
+              validator: (value) => value.length < 6 ? "Hasło musi mieć 6 znaków" : null,
               onChanged: (value) {
                 setState(() {
                   password = value;
                 });
               },
+              obscureText: true,
               cursorColor: Colors.purple,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -91,13 +91,12 @@ class _LoginState extends State<Login> {
             RaisedButton(
               onPressed: () async {
                 if(_formKey.currentState.validate()) {
-                  dynamic result = await _authService.createUserWithEmailAndPassword(email, password);
+                  dynamic result = _authService.logIn(email, password);
                   if(result == null) {
-                    setState(() {
-                      error = "Podaj email";
-                    });
+                    setState(() => errorResult = 'Wystąpił błąd');
                   } else {
-                    print("Zarejestrowałeś sie poprawnie");
+                    print("Zalogowałeś się pomyślnie");
+                    // Navigator.pushNamed(context, "/home");
                   }
                 }
               },
@@ -110,7 +109,7 @@ class _LoginState extends State<Login> {
             SizedBox(height: 10.0,),
             RaisedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/register");
+                // Navigator.pushNamed(context, "/register");
               },
               child: Text(
                 "Nie masz konta? Zarejestruj sie.", 
@@ -122,6 +121,10 @@ class _LoginState extends State<Login> {
               color: Colors.white12,
               elevation: 0.0,
             ),
+            // Text(
+            //   errorResult, 
+            //   style: TextStyle(fontSize: 14.0, color: Colors.red),
+            // ),
             SizedBox(height: 130.0,),
             Text(
               "powered by wisewayapps.com", 
