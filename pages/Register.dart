@@ -102,7 +102,16 @@ class _RegisterState extends State<Register> {
                       borderSide: BorderSide(color: Colors.purple)),
                 ),
               ),
+              SizedBox(height: 20.0,),
               RaisedButton(
+                color: Colors.purple[300],
+                child: Text(
+                  "Zarejestruj",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: "Raleway",
+                  ),
+                ),
                 onPressed: () async {
                   if(_formKey.currentState.validate()) {
                     dynamic result = await _authService.createUserWithEmailAndPassword(_email, _password);
@@ -117,6 +126,7 @@ class _RegisterState extends State<Register> {
                   print(_email);
                   print(_password);
                 },
+                elevation: 0.0,
               ),
             ],
           ),
