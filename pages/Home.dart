@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:salon_app/services/auth_service.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -44,6 +45,16 @@ class _HomeState extends State<Home> {
               leading: Icon(Icons.airline_seat_recline_normal),
               title: Text("Test"),
               subtitle: Text("Testowy opis"),
+            ),
+            ButtonBar(
+              children: <Widget>[
+                FlatButton(
+                  child: Text("Zarejestruj"),
+                  onPressed: () {
+                    
+                  },
+                ),
+              ],
             )
           ],
         ),
@@ -52,3 +63,7 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+
+
+

@@ -1,0 +1,23 @@
+{
+        
+            "nameCompany": "Salon Kobiet Sukcesu",
+            "email": "Email", 
+            "password": "Hasło", 
+            "logButtonText": "Zaloguj", 
+            "textRegister": "Nie masz konta? Zarejestruj sie.", 
+
+
+            "errorEmail": "Podaj adres email", 
+            "errorPassword": "Hasło musi mieć minimum 6 znaków",
+            "errorNameSurname": "Podaj imie i nazwisko",
+            "errorNumberPhone": "Musisz podać minimum 9 liczb",
+
+
+            "appBarRegister": "Zarejestruj swoje konto",
+            "emailRegister": "Email", 
+            "passwordRegister": "Hasło", 
+            "nameSurname": "Imie i nazwisko", 
+            "numberPhone": "Numer telefonu",
+            "buttonRegister": "Zarejestruj"
+
+}

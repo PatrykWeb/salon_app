@@ -1,7 +1,17 @@
+import 'dart:developer';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:salon_app/pages/Register.dart';
 import 'package:salon_app/services/auth_service.dart';
+import 'dart:convert';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:salon_app/words/models.dart';
+
+
+
+
+
 
 class Login extends StatefulWidget {
   @override
@@ -9,6 +19,43 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+
+  String dataCompany;
+  String passwordCompany;
+  String emailCompany;
+  String logButtonText;
+  String textRegister;
+  String errorPassword;
+  String errorEmail;
+
+  Future<String> loadWordFromAssets() async {
+    return await rootBundle.loadString("lib/words/wordsPL.json");
+  }
+
+  Future loadWord() async {
+    String jsonString = await loadWordFromAssets();
+    final jsonResponse = jsonDecode(jsonString);
+    Words words = Words.fromJson(jsonResponse);
+    setState(() {
+      dataCompany = words.nameCompany;
+      passwordCompany = words.password;
+      emailCompany = words.email;
+      logButtonText = words.logButtonText;
+      textRegister = words.textRegister;
+      errorEmail = words.errorEmail;
+      errorPassword = words.errorPassword;
+    });
+    
+  }
+
+  @override
+  void initState() { 
+    super.initState();
+    loadWord();
+  }
+
+
   String email;
   String password;
   String errorResult;
@@ -22,7 +69,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Salon Kobiet Sukcesu",
+          dataCompany.toString(),
           style: TextStyle(
             fontFamily: "Raleway",
           ),
@@ -38,14 +85,14 @@ class _LoginState extends State<Login> {
             children: <Widget>[
               TextFormField(
                 validator: (value) =>
-                    value.isEmpty ? "Podaj adres email" : null,
+                    value.isEmpty ? errorEmail.toString() : null,
                 onChanged: (value) {
                   email = value;
                 },
                 cursorColor: Colors.purple,
                 decoration: InputDecoration(
                   focusColor: Colors.purple[300],
-                  labelText: "Email",
+                  labelText: emailCompany.toString(),
                   border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.purple)),
                   focusedBorder: OutlineInputBorder(
@@ -62,7 +109,7 @@ class _LoginState extends State<Login> {
               ),
               TextFormField(
                 validator: (value) =>
-                    value.length < 6 ? "Hasło musi mieć 6 znaków" : null,
+                    value.length < 6 ? errorPassword.toString() : null,
                 onChanged: (value) {
                   setState(() {
                     password = value;
@@ -75,7 +122,7 @@ class _LoginState extends State<Login> {
                       borderSide: BorderSide(color: Colors.purple)),
                   focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.purple)),
-                  labelText: "Password",
+                  labelText: passwordCompany.toString(),
                   labelStyle: TextStyle(
                     fontSize: 18.0,
                     color: Colors.grey[500],
@@ -98,7 +145,7 @@ class _LoginState extends State<Login> {
                   }
                 },
                 child: Text(
-                  "Zaloguj",
+                  logButtonText.toString(),
                   style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
                 ),
                 color: Colors.purple[300],
@@ -108,12 +155,11 @@ class _LoginState extends State<Login> {
               ),
               RaisedButton(
                 onPressed: () {
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (context) => Register()
-                  ));
+                  Navigator.push(context,
+                      new MaterialPageRoute(builder: (context) => Register()));
                 },
                 child: Text(
-                  "Nie masz konta? Zarejestruj sie.",
+                  textRegister.toString(),
                   style:
                       TextStyle(color: Colors.grey[600], fontFamily: "Raleway"),
                 ),

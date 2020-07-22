@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:salon_app/models/User.dart';
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
- 
+  final _firebaseDatabase = FirebaseDatabase.instance.reference();
 
   User _userFromFirebase(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -15,11 +15,16 @@ class AuthService {
       .map(_userFromFirebase);
    }
 
-  Future createUserWithEmailAndPassword(String email, String password) async {
+  Future createUserWithEmailAndPassword(String email, String password, String nameSurname, int number) async {
     try {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+      _firebaseDatabase.child(user.uid).child("Users").set({
+        'nameSurname': nameSurname, 
+        'number': number, 
+      });
+      
       return _userFromFirebase(user);
       
     } catch (e) {
