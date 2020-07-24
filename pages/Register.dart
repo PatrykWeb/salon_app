@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:salon_app/pages/Login.dart';
 import 'dart:convert';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:salon_app/words/models.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class Register extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class _RegisterState extends State<Register> {
   String errorNameSurname;
   String errorNumberPhone;
   String buttonRegister;
+  String notificationRegister;
 
   Future<String> getWordAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -41,6 +45,7 @@ class _RegisterState extends State<Register> {
       errorNameSurname = words.errorNameSurname;
       errorNumberPhone = words.errorNumberPhone;
       buttonRegister = words.buttonRegister;
+      notificationRegister = words.notificationRegister;
 
     });
   }
@@ -178,6 +183,15 @@ class _RegisterState extends State<Register> {
                       });
                     } else {
                       print("Zarejestrowałeś sie poprawnie");
+                      Navigator.push(context, 
+                        new MaterialPageRoute(builder: (context) => Login()),
+                      );
+                    Fluttertoast.showToast(
+                        msg: notificationRegister.toString(), 
+                        backgroundColor: Colors.purple[300],
+                        toastLength: Toast.LENGTH_SHORT
+
+                    );
                     }
                   }
                 },

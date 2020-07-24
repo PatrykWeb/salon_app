@@ -12,7 +12,6 @@ import 'package:salon_app/words/models.dart';
 
 
 
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -28,6 +27,7 @@ class _LoginState extends State<Login> {
   String textRegister;
   String errorPassword;
   String errorEmail;
+
 
   Future<String> loadWordFromAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");

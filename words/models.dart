@@ -14,6 +14,13 @@ class Words {
   String errorNumberPhone;
   //END Errors
 
+
+  // Notification
+  String notificationLogin;
+  String notificationRegister;
+  String notificationLogout;
+  //END Notification
+
   //Register
   String appBarRegister;
   String emailRegister;
@@ -22,6 +29,9 @@ class Words {
   String numberPhone;
   String buttonRegister;
   //END Register
+
+  //Home 
+  String appNameHome;
 
   Words({
     this.nameCompany,
@@ -38,7 +48,12 @@ class Words {
     this.errorNumberPhone,
     this.nameSurname, 
     this.numberPhone,
-    this.buttonRegister
+    this.buttonRegister, 
+    this.notificationLogin, 
+    this.notificationRegister,
+    this.notificationLogout,
+    this.appNameHome,
+
 
   });
 
@@ -58,7 +73,11 @@ class Words {
         passwordRegister: json["passwordRegister"],
         nameSurname: json["nameSurname"],
         numberPhone: json["numberPhone"],
-        buttonRegister: json["buttonRegister"]
+        buttonRegister: json["buttonRegister"], 
+        notificationLogin: json["notificationLogin"], 
+        notificationRegister: json["notificationRegister"],
+        notificationLogout: json["notificationLogout"],
+        appNameHome: json["appNameHome"]
   );
  
   }

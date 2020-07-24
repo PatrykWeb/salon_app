@@ -11,6 +11,11 @@
             "errorPassword": "Hasło musi mieć minimum 6 znaków",
             "errorNameSurname": "Podaj imie i nazwisko",
             "errorNumberPhone": "Musisz podać minimum 9 liczb",
+            
+
+            "notificationLogin": "Zalogowałeś się pomyślnie",
+            "notificationPassword": "Zarejestrowałeś się pomyślnie",
+            "notificationLogout": "Wylogowałeś się pomyślnie",
 
 
             "appBarRegister": "Zarejestruj swoje konto",
@@ -18,6 +23,8 @@
             "passwordRegister": "Hasło", 
             "nameSurname": "Imie i nazwisko", 
             "numberPhone": "Numer telefonu",
-            "buttonRegister": "Zarejestruj"
+            "buttonRegister": "Zarejestruj",
+
+            "appNameHome": "Strona główna"
 
 }
