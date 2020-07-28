@@ -19,14 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
 
-  String dataCompany;
-  String passwordCompany;
-  String emailCompany;
-  String logButtonText;
-  String textRegister;
-  String errorPassword;
-  String errorEmail;
-
+  String dataCompany, passwordCompany, emailCompany, logButtonText, textRegister, errorPassword, errorEmail;
 
   Future<String> loadWordFromAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");

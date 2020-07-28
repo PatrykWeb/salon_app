@@ -1,10 +1,26 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:salon_app/pages/Register.dart';
+import 'package:salon_app/pages/menu_homepage/Home_menu.dart';
+import 'package:salon_app/pages/menu_homepage/Settings.dart';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:salon_app/words/models.dart';
+import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
+
+
+class HomeLess extends StatelessWidget {
+  const HomeLess({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Home(),
+    );
+  }
+}
+
 
 class Home extends StatefulWidget {
   @override
@@ -12,8 +28,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String notificationLogout;
-  String appNameHome;
+  String notificationLogout, appNameHome;
 
   Future<String> getWordFromAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -30,14 +45,28 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     getWord();
   }
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    HomeMenu(),
+    Settings(), 
+    Register()
+  ];
 
   AuthService authService = AuthService();
+
+  void onTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.purple[300],
@@ -48,7 +77,7 @@ class _HomeState extends State<Home> {
           ),
         ),
         actions: <Widget>[
-          FlatButton.icon(
+          FlatButton(
             onPressed: () async {
               await authService.logOut();
               Fluttertoast.showToast(
@@ -56,38 +85,64 @@ class _HomeState extends State<Home> {
                   backgroundColor: Colors.purple[300],
                   toastLength: Toast.LENGTH_SHORT);
             },
-            label: Text(
-              "Wyloguj",
-              style: TextStyle(color: Colors.white, fontFamily: "Raleway"),
-            ),
-            icon: Icon(
-              Icons.arrow_back,
+            child: Icon(
+              Icons.dehaze,
+              size: 30.0,
               color: Colors.white,
             ),
           )
         ],
       ),
-      body: Center(
-        child: Card(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.airline_seat_recline_normal),
-                title: Text("Test"),
-                subtitle: Text("Testowy opis"),
+      body: _children[_currentIndex],
+      bottomNavigationBar: SnakeNavigationBar(
+        onPositionChanged: onTappedBar,
+        currentIndex: _currentIndex,
+        style: SnakeBarStyle.pinned,
+        snakeShape: SnakeShape.indicator,
+        snakeColor: Colors.purple,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        // shape: ShapeBorder.lerp(30.0, b, t)
+        backgroundColor: Colors.white,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.filter_none),
+            title: Text(
+              "Główna",
+              style: TextStyle(
+                color: Colors.purple,
+                fontFamily: "Raleway",
               ),
-              ButtonBar(
-                children: <Widget>[
-                  FlatButton(
-                    child: Text("Zarejestruj"),
-                    onPressed: () {},
-                  ),
-                ],
-              )
-            ],
+            ),
           ),
-        ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.supervised_user_circle),
+              title: Text(
+                "Konto",
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: "Raleway",
+                ),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.settings_backup_restore),
+              title: Text(
+                "Ustawienia",
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: "Raleway",
+                ),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.event),
+              title: Text(
+                "Zarejestruj",
+                style: TextStyle(
+                  color: Colors.purple,
+                  fontFamily: "Raleway",
+                ),
+              )),
+        ],
       ),
     );
   }
