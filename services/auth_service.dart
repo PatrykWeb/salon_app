@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:salon_app/models/User.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -20,11 +22,10 @@ class AuthService {
       AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
-      _firebaseDatabase.child(user.uid).child("Users").set({
-        'nameSurname': nameSurname, 
-        'number': number, 
+      _firebaseDatabase.child("Users").child(user.uid).set({
+        "nameSurname": nameSurname, 
+        "number": number
       });
-      
       return _userFromFirebase(user);
       
     } catch (e) {
