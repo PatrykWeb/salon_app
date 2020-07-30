@@ -24,7 +24,12 @@
             "nameSurname": "Imie i nazwisko", 
             "numberPhone": "Numer telefonu",
             "buttonRegister": "Zarejestruj",
+            
 
-            "appNameHome": "Strona główna"
+            "appNameHome": "Strona główna",
+            "navigationBottomHome": "Główna", 
+            "navigationBottomAccount": "Konto",
+            "navigationBottomSettings": "Ustawienia",
+            "navigationBottomRegister": "Zarejestruj"
 
 }

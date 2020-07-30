@@ -1,37 +1,31 @@
 class Words {
   //Login
-  String nameCompany;
-  String email;
-  String password;
-  String logButtonText;
-  String textRegister;
+  String nameCompany, email, password, logButtonText, textRegister;
   //END Login
 
   //Errors
-  String errorEmail;
-  String errorPassword;
-  String errorNameSurname; 
-  String errorNumberPhone;
+  String errorEmail, errorPassword, errorNameSurname, errorNumberPhone;
   //END Errors
 
-
   // Notification
-  String notificationLogin;
-  String notificationRegister;
-  String notificationLogout;
+  String notificationLogin, notificationRegister, notificationLogout;
   //END Notification
 
   //Register
-  String appBarRegister;
-  String emailRegister;
-  String passwordRegister;
-  String nameSurname;
-  String numberPhone;
-  String buttonRegister;
+  String appBarRegister,
+      emailRegister,
+      passwordRegister,
+      nameSurname,
+      numberPhone,
+      buttonRegister;
   //END Register
 
-  //Home 
-  String appNameHome;
+  //Home
+  String appNameHome,
+      navigationBottomHome,
+      navigationBottomAccount,
+      navigationBottomSettings,
+      navigationBottomRegister;
 
   Words({
     this.nameCompany,
@@ -43,18 +37,20 @@ class Words {
     this.errorPassword,
     this.appBarRegister,
     this.emailRegister,
-    this.passwordRegister, 
-    this.errorNameSurname, 
+    this.passwordRegister,
+    this.errorNameSurname,
     this.errorNumberPhone,
-    this.nameSurname, 
+    this.nameSurname,
     this.numberPhone,
-    this.buttonRegister, 
-    this.notificationLogin, 
+    this.buttonRegister,
+    this.notificationLogin,
     this.notificationRegister,
     this.notificationLogout,
     this.appNameHome,
-
-
+    this.navigationBottomHome, 
+    this.navigationBottomAccount, 
+    this.navigationBottomSettings, 
+    this.navigationBottomRegister
   });
 
   factory Words.fromJson(Map<String, dynamic> json) {
@@ -68,17 +64,21 @@ class Words {
         errorPassword: json["errorPassword"],
         errorNameSurname: json["errorNameSurname"],
         errorNumberPhone: json["errorNumberPhone"],
-        appBarRegister: json["appBarRegister"], 
+        appBarRegister: json["appBarRegister"],
         emailRegister: json["emailRegister"],
         passwordRegister: json["passwordRegister"],
         nameSurname: json["nameSurname"],
         numberPhone: json["numberPhone"],
-        buttonRegister: json["buttonRegister"], 
-        notificationLogin: json["notificationLogin"], 
+        buttonRegister: json["buttonRegister"],
+        notificationLogin: json["notificationLogin"],
         notificationRegister: json["notificationRegister"],
         notificationLogout: json["notificationLogout"],
-        appNameHome: json["appNameHome"]
-  );
- 
+        appNameHome: json["appNameHome"],
+        navigationBottomHome: json["navigationBottomHome"],
+        navigationBottomAccount: json["navigationBottomAccount"],
+        navigationBottomSettings: json["navigationBottomSettings"],
+        navigationBottomRegister: json["navigationBottomRegister"],
+        );
+        
   }
 }

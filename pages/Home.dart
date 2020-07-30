@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salon_app/pages/Register.dart';
+import 'package:salon_app/pages/menu_homepage/Account.dart';
 import 'package:salon_app/pages/menu_homepage/Home_menu.dart';
 import 'package:salon_app/pages/menu_homepage/Settings.dart';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:salon_app/words/models.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
-
 
 class HomeLess extends StatelessWidget {
   const HomeLess({Key key}) : super(key: key);
@@ -21,14 +21,18 @@ class HomeLess extends StatelessWidget {
   }
 }
 
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String notificationLogout, appNameHome;
+  String notificationLogout,
+      appNameHome,
+      navigationBottomHome,
+      navigationBottomAccount,
+      navigationBottomSettings,
+      navigationBottomRegister;
 
   Future<String> getWordFromAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -41,6 +45,10 @@ class _HomeState extends State<Home> {
     setState(() {
       notificationLogout = words.notificationLogout;
       appNameHome = words.appNameHome;
+      navigationBottomHome = words.navigationBottomHome;
+      navigationBottomAccount = words.navigationBottomAccount;
+      navigationBottomSettings = words.navigationBottomSettings; 
+      navigationBottomRegister = words.navigationBottomRegister;
     });
   }
 
@@ -49,10 +57,12 @@ class _HomeState extends State<Home> {
     super.initState();
     getWord();
   }
+
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeMenu(),
-    Settings(), 
+    Account(),
+    Settings(),
     Register()
   ];
 
@@ -66,9 +76,13 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(30),
+      ),
+    ),
         backgroundColor: Colors.purple[300],
         title: Text(
           appNameHome.toString(),
@@ -108,7 +122,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.filter_none),
             title: Text(
-              "Główna",
+              navigationBottomHome.toString(),
               style: TextStyle(
                 color: Colors.purple,
                 fontFamily: "Raleway",
@@ -118,7 +132,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.supervised_user_circle),
               title: Text(
-                "Konto",
+                navigationBottomAccount.toString(),
                 style: TextStyle(
                   color: Colors.purple,
                   fontFamily: "Raleway",
@@ -127,7 +141,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.settings_backup_restore),
               title: Text(
-                "Ustawienia",
+                navigationBottomSettings.toString(),
                 style: TextStyle(
                   color: Colors.purple,
                   fontFamily: "Raleway",
@@ -136,7 +150,7 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
               icon: Icon(Icons.event),
               title: Text(
-                "Zarejestruj",
+                navigationBottomRegister.toString(),
                 style: TextStyle(
                   color: Colors.purple,
                   fontFamily: "Raleway",
