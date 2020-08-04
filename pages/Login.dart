@@ -7,19 +7,19 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:salon_app/words/models.dart';
 
-
-
-
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-
-
-  String dataCompany, passwordCompany, emailCompany, logButtonText, textRegister, errorPassword, errorEmail;
+  String dataCompany,
+      passwordCompany,
+      emailCompany,
+      logButtonText,
+      textRegister,
+      errorPassword,
+      errorEmail;
 
   Future<String> loadWordFromAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -38,15 +38,13 @@ class _LoginState extends State<Login> {
       errorEmail = words.errorEmail;
       errorPassword = words.errorPassword;
     });
-    
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     loadWord();
   }
-
 
   String email;
   String password;

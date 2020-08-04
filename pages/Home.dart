@@ -77,36 +77,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(30),
-      ),
-    ),
-        backgroundColor: Colors.purple[300],
-        title: Text(
-          appNameHome.toString(),
-          style: TextStyle(
-            fontFamily: "Raleway",
-          ),
-        ),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () async {
-              await authService.logOut();
-              Fluttertoast.showToast(
-                  msg: notificationLogout.toString(),
-                  backgroundColor: Colors.purple[300],
-                  toastLength: Toast.LENGTH_SHORT);
-            },
-            child: Icon(
-              Icons.dehaze,
-              size: 30.0,
-              color: Colors.white,
-            ),
-          )
-        ],
-      ),
       body: _children[_currentIndex],
       bottomNavigationBar: SnakeNavigationBar(
         onPositionChanged: onTappedBar,
@@ -157,7 +127,7 @@ class _HomeState extends State<Home> {
                 ),
               )),
         ],
-      ),
+      )
     );
   }
 }

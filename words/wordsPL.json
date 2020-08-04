@@ -30,6 +30,8 @@
             "navigationBottomHome": "Główna", 
             "navigationBottomAccount": "Konto",
             "navigationBottomSettings": "Ustawienia",
-            "navigationBottomRegister": "Zarejestruj"
+            "navigationBottomRegister": "Zarejestruj",
+
+            "registerServices": "Zarejestrowanie wizyty"
 
 }

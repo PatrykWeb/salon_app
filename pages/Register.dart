@@ -6,25 +6,23 @@ import 'package:salon_app/services/auth_service.dart';
 import 'package:salon_app/words/models.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
-
-  String appBarRegister;
-  String emailRegister;
-  String passwordRegister;
-  String nameSurname;
-  String numberPhone;
-  String errorEmail;
-  String errorPassword;
-  String errorNameSurname;
-  String errorNumberPhone;
-  String buttonRegister;
-  String notificationRegister;
+  String appBarRegister,
+      emailRegister,
+      passwordRegister,
+      nameSurname,
+      numberPhone,
+      errorEmail,
+      errorPassword,
+      errorNameSurname,
+      errorNumberPhone,
+      buttonRegister,
+      notificationRegister;
 
   Future<String> getWordAssets() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -46,12 +44,11 @@ class _RegisterState extends State<Register> {
       errorNumberPhone = words.errorNumberPhone;
       buttonRegister = words.buttonRegister;
       notificationRegister = words.notificationRegister;
-
     });
   }
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     getWord();
   }
@@ -82,7 +79,8 @@ class _RegisterState extends State<Register> {
           child: Column(
             children: <Widget>[
               TextFormField(
-                validator: (value) => value.isEmpty ? errorEmail.toString() : null,
+                validator: (value) =>
+                    value.isEmpty ? errorEmail.toString() : null,
                 onChanged: (value) {
                   setState(() {
                     _email = value;
@@ -104,7 +102,8 @@ class _RegisterState extends State<Register> {
                 height: 20.0,
               ),
               TextFormField(
-                validator: (value) => value.length < 6 ? errorPassword.toString() : null,
+                validator: (value) =>
+                    value.length < 6 ? errorPassword.toString() : null,
                 onChanged: (value) {
                   setState(() {
                     _password = value;
@@ -126,7 +125,8 @@ class _RegisterState extends State<Register> {
                 height: 20.0,
               ),
               TextFormField(
-                validator: (value) => value.isEmpty ? errorNameSurname.toString() : null,
+                validator: (value) =>
+                    value.isEmpty ? errorNameSurname.toString() : null,
                 onChanged: (value) {
                   setState(() {
                     _nameSurname = value;
@@ -144,9 +144,12 @@ class _RegisterState extends State<Register> {
                       borderSide: BorderSide(color: Colors.purple)),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               TextFormField(
-                validator: (value) => value.length <= 9 ? errorNumberPhone.toString() : null,
+                validator: (value) =>
+                    value.length <= 9 ? errorNumberPhone.toString() : null,
                 onChanged: (value) {
                   setState(() {
                     _number = int.parse(value);
@@ -164,7 +167,9 @@ class _RegisterState extends State<Register> {
                       borderSide: BorderSide(color: Colors.purple)),
                 ),
               ),
-              SizedBox(height: 20.0,),
+              SizedBox(
+                height: 20.0,
+              ),
               RaisedButton(
                 color: Colors.purple[300],
                 child: Text(
@@ -175,23 +180,24 @@ class _RegisterState extends State<Register> {
                   ),
                 ),
                 onPressed: () async {
-                  if(_formKey.currentState.validate()) {
-                    dynamic result = await _authService.createUserWithEmailAndPassword(_email, _password, _nameSurname, _number);
-                    if(result == null) {
+                  if (_formKey.currentState.validate()) {
+                    dynamic result =
+                        await _authService.createUserWithEmailAndPassword(
+                            _email, _password, _nameSurname, _number);
+                    if (result == null) {
                       setState(() {
                         error = "Podaj email";
                       });
                     } else {
                       print("Zarejestrowałeś sie poprawnie");
-                      Navigator.push(context, 
+                      Navigator.push(
+                        context,
                         new MaterialPageRoute(builder: (context) => Login()),
                       );
-                    Fluttertoast.showToast(
-                        msg: notificationRegister.toString(), 
-                        backgroundColor: Colors.purple[300],
-                        toastLength: Toast.LENGTH_SHORT
-
-                    );
+                      Fluttertoast.showToast(
+                          msg: notificationRegister.toString(),
+                          backgroundColor: Colors.purple[300],
+                          toastLength: Toast.LENGTH_SHORT);
                     }
                   }
                 },

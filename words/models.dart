@@ -27,6 +27,9 @@ class Words {
       navigationBottomSettings,
       navigationBottomRegister;
 
+  //Home_menu 
+  String registerServices;
+
   Words({
     this.nameCompany,
     this.email,
@@ -50,7 +53,8 @@ class Words {
     this.navigationBottomHome, 
     this.navigationBottomAccount, 
     this.navigationBottomSettings, 
-    this.navigationBottomRegister
+    this.navigationBottomRegister, 
+    this.registerServices,
   });
 
   factory Words.fromJson(Map<String, dynamic> json) {
@@ -78,6 +82,7 @@ class Words {
         navigationBottomAccount: json["navigationBottomAccount"],
         navigationBottomSettings: json["navigationBottomSettings"],
         navigationBottomRegister: json["navigationBottomRegister"],
+        registerServices: json["registerServices"]
         );
         
   }

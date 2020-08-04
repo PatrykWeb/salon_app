@@ -24,7 +24,12 @@ class AuthService {
       FirebaseUser user = result.user;
       _firebaseDatabase.child("Users").child(user.uid).set({
         "nameSurname": nameSurname, 
-        "number": number
+        "number": number, 
+        "managment": false, 
+        "manager": false, 
+        "employee": false, 
+        "boughtService": false,
+        "serviceBoughtName": ""
       });
       return _userFromFirebase(user);
       
@@ -54,4 +59,14 @@ class AuthService {
       return null;
     }
   }
+  Future givesDatabaseRecord() async {
+    _firebaseDatabase.child("Users").once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, value) {
+        print(value["nameSurname"]);
+        return value;
+       });
+    });
+  }
+
 }
