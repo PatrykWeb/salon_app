@@ -3,9 +3,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salon_app/pages/menu_homepage/Settings.dart';
+import 'package:salon_app/pages/panel_admin/Main_admin.dart';
 import 'package:salon_app/words/models.dart';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomeMenu extends StatefulWidget {
   @override
@@ -16,10 +18,11 @@ class _HomeMenuState extends State<HomeMenu> {
   final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users");
   String nameCompany, registerServices;
   dynamic getName;
-  bool getManagment;
   bool getCheckBoughtService;
+  bool getCheckManagment;
   String checkBoughtService;
   String getNameBoughtService, nameBoughtService;
+  dynamic ifNoPermission;
 
   Future<String> getWordJson() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -43,9 +46,8 @@ class _HomeMenuState extends State<HomeMenu> {
       values.forEach((key, value) {
         setState(() {
           getName = value["nameSurname"];
-          getManagment = value["managment"];
           getCheckBoughtService = value["boughtService"];
-
+          getCheckManagment = value["managment"];
         });
         if (!getCheckBoughtService) {
           setState(() {
@@ -58,9 +60,26 @@ class _HomeMenuState extends State<HomeMenu> {
             nameBoughtService = value["serviceBoughtName"];
           });
         }
+        if(!getCheckManagment) {
+          setState(() {
+            ifNoPermission = Colors.white;
+          });
+        } else {
+          setState(() {
+            ifNoPermission = Colors.purple[300];
+          });
+        }
       });
     });
   }
+
+  // Future checkPermissions() async {
+  //   if (!getCheckManagment) {
+  //     print("Nie posiadasz uprawnien");
+  //   } else {
+  //     authService.logOut();
+  //   }
+  // }
 
   @override
   void initState() {
@@ -78,8 +97,17 @@ class _HomeMenuState extends State<HomeMenu> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.security),
-              onPressed: () => authService.logOut(),
-              color: Colors.purple[300],
+              onPressed: () {
+                if(!getCheckManagment) {
+                  print("Brak uprawnień");
+                } else {
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => MainAdmin()
+                  ));
+                  Fluttertoast.showToast(msg: "Zalogowałeś się do panelu administratora");
+                }
+              },
+              color: ifNoPermission,
             ),
           ],
           title: Text(
