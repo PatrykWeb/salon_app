@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:salon_app/pages/Register.dart';
 import 'package:salon_app/pages/menu_homepage/Settings.dart';
 import 'package:salon_app/pages/panel_admin/Main_admin.dart';
 import 'package:salon_app/words/models.dart';
@@ -18,11 +19,10 @@ class _HomeMenuState extends State<HomeMenu> {
   final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users");
   String nameCompany, registerServices;
   dynamic getName;
-  bool getCheckBoughtService;
-  bool getCheckManagment;
+  bool getCheckBoughtService, getCheckManagment, getCheckEmployee;
   String checkBoughtService;
-  String getNameBoughtService, nameBoughtService;
-  dynamic ifNoPermission;
+  String getNameBoughtService, nameBoughtService, employeeSectionName;
+  dynamic ifNoPermissionManagment, employeeSectionIcon;
 
   Future<String> getWordJson() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -39,8 +39,6 @@ class _HomeMenuState extends State<HomeMenu> {
   }
 
   Future getDateDatabase() async {
-    final FirebaseUser userCurrent = await FirebaseAuth.instance.currentUser();
-    dynamic getCurrentUser = userCurrent.uid;
     firebaseDatabase.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key, value) {
@@ -48,6 +46,7 @@ class _HomeMenuState extends State<HomeMenu> {
           getName = value["nameSurname"];
           getCheckBoughtService = value["boughtService"];
           getCheckManagment = value["managment"];
+          getCheckEmployee = value["manager"];
         });
         if (!getCheckBoughtService) {
           setState(() {
@@ -60,13 +59,26 @@ class _HomeMenuState extends State<HomeMenu> {
             nameBoughtService = value["serviceBoughtName"];
           });
         }
-        if(!getCheckManagment) {
+        if (!getCheckManagment) {
           setState(() {
-            ifNoPermission = Colors.white;
+            ifNoPermissionManagment = Colors.white;
+          });
+        } 
+         else {
+          setState(() {
+            ifNoPermissionManagment = Colors.purple[300];
+          });
+        }
+        if(!getCheckEmployee) {
+          setState(() {
+            employeeSectionName = "Szczegóły";
+            employeeSectionIcon = Icons.category;
+            
           });
         } else {
           setState(() {
-            ifNoPermission = Colors.purple[300];
+            employeeSectionName = "Strefa pracownika";
+            employeeSectionIcon = Icons.explicit;
           });
         }
       });
@@ -96,18 +108,18 @@ class _HomeMenuState extends State<HomeMenu> {
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.security),
+              icon: Icon(Icons.font_download),
               onPressed: () {
-                if(!getCheckManagment) {
-                  print("Brak uprawnień");
+                if (getCheckManagment) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MainAdmin()));
+                  Fluttertoast.showToast(
+                      msg: "Zalogowałeś się do panelu administratora");
                 } else {
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => MainAdmin()
-                  ));
-                  Fluttertoast.showToast(msg: "Zalogowałeś się do panelu administratora");
+                  print("Nie masz uprawnien");
                 }
               },
-              color: ifNoPermission,
+              color: ifNoPermissionManagment,
             ),
           ],
           title: Text(
@@ -184,6 +196,47 @@ class _HomeMenuState extends State<HomeMenu> {
                                         fontFamily: "Raleway"),
                                   ),
                                 ),
+                                RaisedButton.icon(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                  onPressed: () {
+                                    if (getCheckManagment) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MainAdmin(),
+                                          ));
+                                    } else if (getCheckEmployee) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MainAdmin(),
+                                          ));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => Register(),
+                                          ));
+                                    }
+                                  },
+                                  padding:
+                                      EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
+                                  icon: Icon(
+                                    employeeSectionIcon,
+                                    color: Colors.purple[300],
+                                  ),
+                                  label: Text(
+                                    employeeSectionName.toString(),
+                                    style: TextStyle(
+                                        color: Colors.purple[300],
+                                        fontFamily: "Raleway",
+                                        fontSize: 16.0),
+                                  ),
+                                  color: Colors.white,
+                                  elevation: 0.0,
+                                )
                               ],
                             ),
                           ),
