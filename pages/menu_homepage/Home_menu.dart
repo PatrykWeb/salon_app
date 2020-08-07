@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:salon_app/pages/Register.dart';
 import 'package:salon_app/pages/menu_homepage/Settings.dart';
 import 'package:salon_app/pages/panel_admin/Main_admin.dart';
+import 'package:salon_app/pages/panel_admin/Main_employee.dart';
 import 'package:salon_app/words/models.dart';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -46,7 +47,7 @@ class _HomeMenuState extends State<HomeMenu> {
           getName = value["nameSurname"];
           getCheckBoughtService = value["boughtService"];
           getCheckManagment = value["managment"];
-          getCheckEmployee = value["manager"];
+          getCheckEmployee = value["employee"];
         });
         if (!getCheckBoughtService) {
           setState(() {
@@ -63,22 +64,25 @@ class _HomeMenuState extends State<HomeMenu> {
           setState(() {
             ifNoPermissionManagment = Colors.white;
           });
-        } 
-         else {
+        } else {
           setState(() {
             ifNoPermissionManagment = Colors.purple[300];
           });
         }
-        if(!getCheckEmployee) {
-          setState(() {
-            employeeSectionName = "Szczegóły";
-            employeeSectionIcon = Icons.category;
-            
-          });
-        } else {
+        if (getCheckEmployee) {
           setState(() {
             employeeSectionName = "Strefa pracownika";
             employeeSectionIcon = Icons.explicit;
+          });
+        } else if (getCheckManagment) {
+          setState(() {
+            employeeSectionName = "Strefa pracownika";
+            employeeSectionIcon = Icons.explicit;
+          });
+        } else {
+          setState(() {
+            employeeSectionName = "Szczegóły";
+            employeeSectionIcon = Icons.category;
           });
         }
       });
@@ -106,6 +110,14 @@ class _HomeMenuState extends State<HomeMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              size: 30.0,
+              color: Colors.purple[300],
+            ),
+            onPressed: () => authService.logOut(),
+          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.font_download),
@@ -205,13 +217,15 @@ class _HomeMenuState extends State<HomeMenu> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MainAdmin(),
+                                            builder: (context) =>
+                                                MainEmployee(),
                                           ));
                                     } else if (getCheckEmployee) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MainAdmin(),
+                                            builder: (context) =>
+                                                MainEmployee(),
                                           ));
                                     } else {
                                       Navigator.push(
@@ -246,11 +260,112 @@ class _HomeMenuState extends State<HomeMenu> {
               ),
             ),
             SizedBox(
-              height: 40.0,
+              height: 10.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "Przewiń palcem w prawo", 
+                  style: TextStyle(
+                    color: Colors.black54, 
+                    fontFamily: "Raleway",
+                    fontSize: 16.0, 
+                    fontWeight: FontWeight.w600
+                  ),
+                ),
+                Icon(
+                  Icons.navigate_next, 
+                  color: Colors.black54,
+                  size: 35.0,
+                ),
+              ],
+            ),
+            Column(
+              children: <Widget>[
+                Text(
+                  "Wybierz kategorie, która cie interesuje i przejdz do rejestracji", 
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 12.0
+                  ),
+                )
+              ],
             ),
             CustomContainer(
-              child: Row(
-                children: <Widget>[],
+              child: Container(
+                margin: EdgeInsets.symmetric(vertical: 20.0),
+                height: 50.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () => {},
+                      color: Colors.purple[300],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: Text(
+                        "Testadadadadaaad", 
+                        style: TextStyle(
+                          fontFamily: "Raleway", 
+                          color: Colors.white
+                        ),
+                      ),
+                      elevation: 0.0,
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    RaisedButton(
+                      onPressed: () => {},
+                      color: Colors.purple[300],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: Text(
+                        "Testadadadadadaa", 
+                                          style: TextStyle(
+                          fontFamily: "Raleway", 
+                          color: Colors.white
+                                          )
+                      ),
+                      elevation: 0.0,
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    RaisedButton(
+                      onPressed: () => {},
+                      color: Colors.purple[300],
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: Text(
+                        "Testadadadadadaa", 
+                          style: TextStyle(
+                          fontFamily: "Raleway", 
+                          color: Colors.white
+                        ),
+                      ),
+                      elevation: 0.0,
+                    ),
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    RaisedButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      onPressed: () => {},
+                      color: Colors.purple[300],
+                      child: Text(
+                        "Testadadadadadaa", 
+                        style: TextStyle(
+                          fontFamily: "Raleway", 
+                          color: Colors.white
+                        ),
+                      ),
+                      elevation: 0.0,
+                    ),
+                  ],
+                ),
               ),
             )
           ],
