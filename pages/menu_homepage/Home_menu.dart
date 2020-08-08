@@ -18,7 +18,7 @@ class HomeMenu extends StatefulWidget {
 
 class _HomeMenuState extends State<HomeMenu> {
   final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users");
-  String nameCompany, registerServices;
+  String nameCompany, registerServices, employeeSectionNameJson, detailsSectionNameJson, scrollRightText, scrollRightDetails;
   dynamic getName;
   bool getCheckBoughtService, getCheckManagment, getCheckEmployee;
   String checkBoughtService;
@@ -36,6 +36,10 @@ class _HomeMenuState extends State<HomeMenu> {
     setState(() {
       nameCompany = words.nameCompany;
       registerServices = words.registerServices;
+      employeeSectionNameJson = words.employeeSectionNameJson;
+      detailsSectionNameJson = words.detailsSectionNameJson;
+      scrollRightText = words.scrollRightText;
+      scrollRightDetails = words.scrollRightDetails;
     });
   }
 
@@ -71,17 +75,17 @@ class _HomeMenuState extends State<HomeMenu> {
         }
         if (getCheckEmployee) {
           setState(() {
-            employeeSectionName = "Strefa pracownika";
+            employeeSectionName = employeeSectionNameJson.toString();
             employeeSectionIcon = Icons.explicit;
           });
         } else if (getCheckManagment) {
           setState(() {
-            employeeSectionName = "Strefa pracownika";
+            employeeSectionName = employeeSectionNameJson.toString();
             employeeSectionIcon = Icons.explicit;
           });
         } else {
           setState(() {
-            employeeSectionName = "Szczegóły";
+            employeeSectionName = detailsSectionNameJson.toString();
             employeeSectionIcon = Icons.category;
           });
         }
@@ -266,7 +270,7 @@ class _HomeMenuState extends State<HomeMenu> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "Przewiń palcem w prawo", 
+                  scrollRightText.toString(), 
                   style: TextStyle(
                     color: Colors.black54, 
                     fontFamily: "Raleway",
@@ -284,7 +288,7 @@ class _HomeMenuState extends State<HomeMenu> {
             Column(
               children: <Widget>[
                 Text(
-                  "Wybierz kategorie, która cie interesuje i przejdz do rejestracji", 
+                  scrollRightDetails.toString(), 
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 12.0
@@ -305,7 +309,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Text(
-                        "Testadadadadaaad", 
+                        "HIFU 1D - CIAŁO", 
                         style: TextStyle(
                           fontFamily: "Raleway", 
                           color: Colors.white
@@ -322,7 +326,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Text(
-                        "Testadadadadadaa", 
+                        "FALA AKUSTYCZNA", 
                                           style: TextStyle(
                           fontFamily: "Raleway", 
                           color: Colors.white
@@ -339,7 +343,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Text(
-                        "Testadadadadadaa", 
+                        "HIFU 2D - CIAŁO", 
                           style: TextStyle(
                           fontFamily: "Raleway", 
                           color: Colors.white
@@ -356,7 +360,7 @@ class _HomeMenuState extends State<HomeMenu> {
                       onPressed: () => {},
                       color: Colors.purple[300],
                       child: Text(
-                        "Testadadadadadaa", 
+                        "KARBOKSYTERAPIA", 
                         style: TextStyle(
                           fontFamily: "Raleway", 
                           color: Colors.white

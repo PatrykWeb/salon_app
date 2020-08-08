@@ -32,6 +32,14 @@
             "navigationBottomSettings": "Ustawienia",
             "navigationBottomRegister": "Zarejestruj",
 
-            "registerServices": "Zarejestrowanie wizyty"
+            "registerServices": "Zarejestrowanie wizyty", 
+            "employeeSectionNameJson": "Strefa pracownika",
+            "detailsSectionNameJson": "Szczegóły",
+            "scrollRightText": "Przewiń palcem w prawo", 
+            "scrollRightDetails": "Wybierz kategorie, która cie interesuje i przejdź do rejestracji"
+
+
+
+
 
 }

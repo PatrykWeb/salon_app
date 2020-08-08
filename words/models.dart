@@ -28,7 +28,7 @@ class Words {
       navigationBottomRegister;
 
   //Home_menu 
-  String registerServices;
+  String registerServices, employeeSectionNameJson, detailsSectionNameJson, scrollRightText, scrollRightDetails;
 
   Words({
     this.nameCompany,
@@ -55,6 +55,10 @@ class Words {
     this.navigationBottomSettings, 
     this.navigationBottomRegister, 
     this.registerServices,
+    this.employeeSectionNameJson, 
+    this.detailsSectionNameJson, 
+    this.scrollRightText, 
+    this.scrollRightDetails
   });
 
   factory Words.fromJson(Map<String, dynamic> json) {
@@ -82,7 +86,11 @@ class Words {
         navigationBottomAccount: json["navigationBottomAccount"],
         navigationBottomSettings: json["navigationBottomSettings"],
         navigationBottomRegister: json["navigationBottomRegister"],
-        registerServices: json["registerServices"]
+        registerServices: json["registerServices"], 
+        employeeSectionNameJson: json['employeeSectionNameJson'], 
+        detailsSectionNameJson: json["detailsSectionNameJson"], 
+        scrollRightText: json["scrollRightText"], 
+        scrollRightDetails: json["scrollRightDetails"]
         );
         
   }
