@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:salon_app/services/auth_service.dart';
 
 class MainAdmin extends StatefulWidget {
   MainAdmin({Key key}) : super(key: key);
@@ -8,6 +9,10 @@ class MainAdmin extends StatefulWidget {
 }
 
 class _MainAdminState extends State<MainAdmin> {
+  final _formKey = GlobalKey<FormState>();
+  AuthService _authService = AuthService();
+  String category;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +73,84 @@ class _MainAdminState extends State<MainAdmin> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 ListTile(
-                                  onTap: () => print("Test"),
+                                  onTap: () => {
+                                    showDialog(
+                                      context: context, 
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          elevation: 0.0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(17.0)
+                                          ),
+                                          backgroundColor: Colors.white,
+                                          child: Container(
+                                            height: 140.0,
+                                            child: Form(
+                                              key: _formKey,
+                                              child: Column(
+                                              children: <Widget>[ 
+                                                Padding(padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0)),
+                                                TextFormField(
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      category = value;
+                                                    });
+                                                  },
+                                                  validator: (value) => value.isEmpty ? "Musisz wpisać nazwe kategorii" : null,
+                                                  cursorColor: Colors.purple,
+                                                  autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    labelStyle: TextStyle(
+                                                      color: Colors.purple
+                                                    ),
+                                                    labelText: "Kategoria",
+                                                    hintText: "Nazwa kategorii", 
+                                                    focusColor: Colors.purple[300], 
+                                                    contentPadding: EdgeInsets.all(10.0),
+                                                    border: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple)
+                                                    ),
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple)
+                                                    )
+                                                  ),
+                                                ),
+                                                SizedBox(height: 10.0,),
+                                                RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(30.0)
+                                                  ),
+                                                  padding: EdgeInsets.only(left: 110.0, right: 110.0),
+                                                  onPressed: () {
+                                                    print(category);
+                                                    if(_formKey.currentState.validate()) {
+                                                      _formKey.currentState.reset();
+                                                      dynamic result = _authService.addCategory(category);
+                                                      if(result == null) {
+                                                        print("Dodałeś rekord pomyślnie");
+                                                      } else {
+                                                      print("Dodales rekord pomyslnie");
+                                                      }
+                                                    } 
+                                                  }, 
+                                                  color: Colors.purple[300],
+                                                  child: Text(
+                                                    "Dodaj",
+                                                    style: TextStyle(
+                                                      fontFamily: "Raleway", 
+                                                      color: Colors.white, 
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          )
+                                        );
+                                      }
+                                    )
+                                  },
                                   leading: Icon(
                                     Icons.call_split,
                                     color: Colors.white,
@@ -99,7 +181,7 @@ class _MainAdminState extends State<MainAdmin> {
                                 elevation: 0.0,
                                 color: Colors.purple[300],
                                 child: ListTile(
-                                  onTap: () => print("Title2"),
+                                  onTap: () => print("test"),
                                   leading: Icon(
                                     Icons.add_to_photos,
                                     color: Colors.white,
@@ -115,7 +197,7 @@ class _MainAdminState extends State<MainAdmin> {
                                     "Stostuj sie do wytycznych, aby dodac produkt",
                                     style: TextStyle(
                                         color: Colors.white54,
-                                        fontFamily: "Raleway"),
+                                        fontFamily: "Raleway",),
                                   ),
                                 ),
                               ),
@@ -161,10 +243,12 @@ class _MainAdminState extends State<MainAdmin> {
                 )
               ],
             )
-            
           ],
         ),
       ),
     );
   }
+  // showCategoryDialog() async {
+
+  // }
 }

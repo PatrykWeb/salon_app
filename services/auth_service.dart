@@ -68,5 +68,9 @@ class AuthService {
        });
     });
   }
-
+  Future addCategory(String category) async {
+    _firebaseDatabase.child("Category").child(category).set({
+      "Category": category
+    });
+  }
 }

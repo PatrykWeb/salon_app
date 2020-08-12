@@ -327,10 +327,10 @@ class _HomeMenuState extends State<HomeMenu> {
                           borderRadius: BorderRadius.circular(20.0)),
                       child: Text(
                         "FALA AKUSTYCZNA", 
-                                          style: TextStyle(
+                          style: TextStyle(
                           fontFamily: "Raleway", 
                           color: Colors.white
-                                          )
+                        )
                       ),
                       elevation: 0.0,
                     ),
