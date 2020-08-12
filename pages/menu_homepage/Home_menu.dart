@@ -166,8 +166,8 @@ class _HomeMenuState extends State<HomeMenu> {
                       bottomRight: Radius.circular(51),
                       bottomLeft: Radius.circular(51)),
                   color: Colors.white),
-              child: Hero(
-                tag: "card",
+              child: Material(
+                borderRadius: BorderRadius.circular(40.0),
                 child: InkWell(
                   child: Container(
                       margin:
