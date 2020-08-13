@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/services/auth_service.dart';
 
@@ -9,9 +10,36 @@ class MainAdmin extends StatefulWidget {
 }
 
 class _MainAdminState extends State<MainAdmin> {
+  dynamic categoryList;
   final _formKey = GlobalKey<FormState>();
   AuthService _authService = AuthService();
+  final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category");
   String category;
+  dynamic i;
+
+
+    Future giveCategoryRecords() async {
+      _firebaseDatabase.once().then((DataSnapshot snaphot) {
+      Map<dynamic, dynamic> values = snaphot.value;
+      // for(i in values) {
+      //   setState(() {
+      //     categoryList = i;
+      //   });
+      // }
+    
+      //   // values.forEach((key, value) {
+      //   //   setState(() {
+      //   //     categoryList = key;
+      //   //   });
+      //   // });
+    });
+  }
+
+  @override
+  void initState() { 
+      super.initState();
+      giveCategoryRecords();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,10 +129,15 @@ class _MainAdminState extends State<MainAdmin> {
                                                   autofocus: true,
                                                   decoration: InputDecoration(
                                                     labelStyle: TextStyle(
-                                                      color: Colors.purple
+                                                      color: Colors.purple, 
+                                                      fontFamily: "Raleway",
+                                                      fontWeight: FontWeight.w600
                                                     ),
                                                     labelText: "Kategoria",
-                                                    hintText: "Nazwa kategorii", 
+                                                    hintText: "Nazwa kategorii",
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Raleway"
+                                                    ), 
                                                     focusColor: Colors.purple[300], 
                                                     contentPadding: EdgeInsets.all(10.0),
                                                     border: UnderlineInputBorder(
@@ -157,7 +190,7 @@ class _MainAdminState extends State<MainAdmin> {
                                     size: 30.0,
                                   ),
                                   title: Text(
-                                    "Dodaj kategorie",
+                                    "Nazwa kategorii",
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: "Raleway",
@@ -181,7 +214,99 @@ class _MainAdminState extends State<MainAdmin> {
                                 elevation: 0.0,
                                 color: Colors.purple[300],
                                 child: ListTile(
-                                  onTap: () => print("test"),
+                                  onTap: () => {
+                                    showDialog(
+                                      context: context, 
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(17.0)
+                                          ),
+                                          backgroundColor: Colors.white,
+                                          child: Container(
+                                            padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                            height: 300.0,
+                                            child: Form(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Padding(padding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),),
+                                                  TextFormField(
+                                                    autofocus: true,
+                                                    cursorColor: Colors.purple[300],
+                                                    decoration: InputDecoration(
+                                                      labelText: "Produkt", 
+                                                      hintText: "Nazwa produktu",
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: "Raleway"
+                                                      ),
+                                                      labelStyle: TextStyle(
+                                                        fontFamily: "Raleway",
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.purple[300]
+                                                      ), 
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      ),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      )
+                                                    ),
+                                                  ),
+                                                TextFormField(
+                                                    autofocus: true,
+                                                    cursorColor: Colors.purple[300],
+                                                    decoration: InputDecoration(
+                                                      labelText: "Opis", 
+                                                      hintText: "Nazwa produktu",
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: "Raleway"
+                                                      ),
+                                                      labelStyle: TextStyle(
+                                                        fontFamily: "Raleway",
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.purple[300]
+                                                      ), 
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      ),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      )
+                                                    ),
+                                                  ),
+                                                TextFormField(
+                                                    autofocus: true,
+                                                    cursorColor: Colors.purple[300],
+                                                    decoration: InputDecoration(
+                                                      labelText: "Przewidywany czas", 
+                                                      hintText: "Wpisz przewidywany czas",
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: "Raleway"
+                                                      ),
+                                                      labelStyle: TextStyle(
+                                                        fontFamily: "Raleway",
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.purple[300]
+                                                      ), 
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      ),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      )
+                                                    ),
+                                                  ), 
+                                                  RaisedButton(
+                                                    onPressed: () => print(categoryList),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    )
+                                  },
                                   leading: Icon(
                                     Icons.add_to_photos,
                                     color: Colors.white,
@@ -197,7 +322,8 @@ class _MainAdminState extends State<MainAdmin> {
                                     "Stostuj sie do wytycznych, aby dodac produkt",
                                     style: TextStyle(
                                         color: Colors.white54,
-                                        fontFamily: "Raleway",),
+                                        fontFamily: "Raleway",
+                                        ),
                                   ),
                                 ),
                               ),

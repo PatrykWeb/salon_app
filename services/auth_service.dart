@@ -73,4 +73,12 @@ class AuthService {
       "Category": category
     });
   }
+  Future giveCategoryRecords() async {
+    _firebaseDatabase.child("Category").once().then((DataSnapshot snaphot) {
+      Map<dynamic, dynamic> values = snaphot.value;
+      values.forEach((key, value) {
+        print(value["Category"]);
+      });
+    });
+  }
 }
