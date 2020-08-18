@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:salon_app/pages/Register.dart';
@@ -18,12 +19,71 @@ class HomeMenu extends StatefulWidget {
 
 class _HomeMenuState extends State<HomeMenu> {
   final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users");
+  final _firebaseCategory = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
   String nameCompany, registerServices, employeeSectionNameJson, detailsSectionNameJson, scrollRightText, scrollRightDetails;
   dynamic getName;
   bool getCheckBoughtService, getCheckManagment, getCheckEmployee;
   String checkBoughtService;
   String getNameBoughtService, nameBoughtService, employeeSectionName;
   dynamic ifNoPermissionManagment, employeeSectionIcon;
+
+  Widget _categoryBuilder({Map category, index}) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)
+            ),
+            color: Colors.purple[300],
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  leading: Icon(
+                    Icons.category, 
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    category["Category"], 
+                    style: TextStyle(
+                      color: Colors.white, 
+                      fontFamily: "Raleway", 
+                      fontWeight: FontWeight.w600
+                    ),
+                  ),
+                  subtitle: Text(
+                    category["Description"], 
+                    style: TextStyle(
+                      color: Colors.white54, 
+                      fontFamily: "Raleway"
+                    ),
+                  ),
+                ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0)
+                  ),
+                  padding: EdgeInsets.only(left: 70.0, right: 70.0),
+                  elevation: 0.0,
+                  color: Colors.white,
+                  onPressed: () {
+                    print(index);
+                  },
+                  child: Text(
+                    "Zabiegi z tej kategorii", 
+                    style: TextStyle(
+                      color: Colors.black, 
+                      fontFamily: "Raleway"
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   Future<String> getWordJson() async {
     return await rootBundle.loadString("lib/words/wordsPL.json");
@@ -279,7 +339,7 @@ class _HomeMenuState extends State<HomeMenu> {
                   ),
                 ),
                 Icon(
-                  Icons.navigate_next, 
+                  Icons.expand_more, 
                   color: Colors.black54,
                   size: 35.0,
                 ),
@@ -290,8 +350,10 @@ class _HomeMenuState extends State<HomeMenu> {
                 Text(
                   scrollRightDetails.toString(), 
                   style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 12.0
+                    color: Colors.black45,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "Raleway"
                   ),
                 )
               ],
@@ -299,79 +361,25 @@ class _HomeMenuState extends State<HomeMenu> {
             CustomContainer(
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 20.0),
-                height: 50.0,
+                height: 238.0,
                 child: ListView(
-                  scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.vertical,
                   children: <Widget>[
-                    RaisedButton(
-                      onPressed: () => {},
-                      color: Colors.purple[300],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      child: Text(
-                        "HIFU 1D - CIAŁO", 
-                        style: TextStyle(
-                          fontFamily: "Raleway", 
-                          color: Colors.white
-                        ),
+                    Container(
+                      height: 238.0,
+                      child: FirebaseAnimatedList(
+                        query: _firebaseCategory,
+                        itemBuilder: (context, snapshot, animation, index) {
+                          Map category = snapshot.value;
+                          int indexCategory = index.sign;
+                          return _categoryBuilder(category: category, index: indexCategory);
+                        }, 
                       ),
-                      elevation: 0.0,
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    RaisedButton(
-                      onPressed: () => {},
-                      color: Colors.purple[300],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      child: Text(
-                        "FALA AKUSTYCZNA", 
-                          style: TextStyle(
-                          fontFamily: "Raleway", 
-                          color: Colors.white
-                        )
-                      ),
-                      elevation: 0.0,
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    RaisedButton(
-                      onPressed: () => {},
-                      color: Colors.purple[300],
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      child: Text(
-                        "HIFU 2D - CIAŁO", 
-                          style: TextStyle(
-                          fontFamily: "Raleway", 
-                          color: Colors.white
-                        ),
-                      ),
-                      elevation: 0.0,
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0)),
-                      onPressed: () => {},
-                      color: Colors.purple[300],
-                      child: Text(
-                        "KARBOKSYTERAPIA", 
-                        style: TextStyle(
-                          fontFamily: "Raleway", 
-                          color: Colors.white
-                        ),
-                      ),
-                      elevation: 0.0,
                     ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         )));
   }

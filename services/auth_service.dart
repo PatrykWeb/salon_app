@@ -68,17 +68,10 @@ class AuthService {
        });
     });
   }
-  Future addCategory(String category) async {
+  Future addCategory(String category, String categoryDesc) async {
     _firebaseDatabase.child("Category").child(category).set({
-      "Category": category
-    });
-  }
-  Future giveCategoryRecords() async {
-    _firebaseDatabase.child("Category").once().then((DataSnapshot snaphot) {
-      Map<dynamic, dynamic> values = snaphot.value;
-      values.forEach((key, value) {
-        print(value["Category"]);
-      });
+      "Category": category, 
+      "Description": categoryDesc
     });
   }
 }

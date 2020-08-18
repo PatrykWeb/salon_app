@@ -1,4 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/services/auth_service.dart';
 
@@ -13,10 +14,25 @@ class _MainAdminState extends State<MainAdmin> {
   dynamic categoryList;
   final _formKey = GlobalKey<FormState>();
   AuthService _authService = AuthService();
-  final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category");
-  String category;
+  final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
+  String category, categoryDesc;
   dynamic i;
 
+
+    Widget _buildCategory({Map category}) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Text(
+            category["Category"], 
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
     Future giveCategoryRecords() async {
       _firebaseDatabase.once().then((DataSnapshot snaphot) {
@@ -42,6 +58,7 @@ class _MainAdminState extends State<MainAdmin> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -112,12 +129,12 @@ class _MainAdminState extends State<MainAdmin> {
                                           ),
                                           backgroundColor: Colors.white,
                                           child: Container(
-                                            height: 140.0,
+                                            padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                            height: 240.0,
                                             child: Form(
                                               key: _formKey,
                                               child: Column(
                                               children: <Widget>[ 
-                                                Padding(padding: EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0)),
                                                 TextFormField(
                                                   onChanged: (value) {
                                                     setState(() {
@@ -148,17 +165,46 @@ class _MainAdminState extends State<MainAdmin> {
                                                     )
                                                   ),
                                                 ),
-                                                SizedBox(height: 10.0,),
+                                               TextFormField(
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      categoryDesc = value;
+                                                    });
+                                                  },
+                                                  validator: (value) => value.isEmpty ? "Musisz wpisać opis kategorii" : null,
+                                                  cursorColor: Colors.purple,
+                                                  autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    labelStyle: TextStyle(
+                                                      color: Colors.purple, 
+                                                      fontFamily: "Raleway",
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                    labelText: "Opis",
+                                                    hintText: "Wpisz opis kategorii",
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Raleway"
+                                                    ), 
+                                                    focusColor: Colors.purple[300], 
+                                                    contentPadding: EdgeInsets.all(10.0),
+                                                    border: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple)
+                                                    ),
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple)
+                                                    )
+                                                  ),
+                                                ),
+                                                SizedBox(height: 30.0,),
                                                 RaisedButton(
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(30.0)
                                                   ),
-                                                  padding: EdgeInsets.only(left: 110.0, right: 110.0),
+                                                  padding: EdgeInsets.only(left: 100.0, right: 100.0),
                                                   onPressed: () {
-                                                    print(category);
                                                     if(_formKey.currentState.validate()) {
                                                       _formKey.currentState.reset();
-                                                      dynamic result = _authService.addCategory(category);
+                                                      dynamic result = _authService.addCategory(category, categoryDesc);
                                                       if(result == null) {
                                                         print("Dodałeś rekord pomyślnie");
                                                       } else {
@@ -298,6 +344,7 @@ class _MainAdminState extends State<MainAdmin> {
                                                   ), 
                                                   RaisedButton(
                                                     onPressed: () => print(categoryList),
+                                                    child: Text("adadadadada"),
                                                   )
                                                 ],
                                               ),
@@ -305,7 +352,7 @@ class _MainAdminState extends State<MainAdmin> {
                                           ),
                                         );
                                       }
-                                    )
+                                    ),
                                   },
                                   leading: Icon(
                                     Icons.add_to_photos,
@@ -367,14 +414,11 @@ class _MainAdminState extends State<MainAdmin> {
                     fontFamily: "Raleway",
                   ),
                 )
-              ],
-            )
+              ]
+            ),
           ],
         ),
       ),
     );
   }
-  // showCategoryDialog() async {
-
-  // }
 }
