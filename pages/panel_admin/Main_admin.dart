@@ -21,17 +21,25 @@ class _MainAdminState extends State<MainAdmin> {
 
     Widget _buildCategory({Map category}) {
     return Container(
-      child: Column(
-        children: <Widget>[
-          Text(
-            category["Category"], 
-            style: TextStyle(
-              color: Colors.black
-            ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.purple[300],
+          borderRadius: BorderRadius.circular(30.0)
+        ),
+          child: Column(
+            children: <Widget>[
+              Text(
+                category["Category"], 
+                style: TextStyle(
+                  fontFamily: "Raleway", 
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600
+                ),
+              )
+            ],
           ),
-        ],
-      ),
-    );
+        )
+      );
   }
 
     Future giveCategoryRecords() async {
@@ -269,10 +277,11 @@ class _MainAdminState extends State<MainAdmin> {
                                             borderRadius: BorderRadius.circular(17.0)
                                           ),
                                           backgroundColor: Colors.white,
-                                          child: Container(
+                                          child: SingleChildScrollView(
                                             padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
-                                            height: 300.0,
+                                            // height: 500.0,
                                             child: Form(
+                                              key: _formKey,
                                               child: Column(
                                                 children: <Widget>[
                                                   Padding(padding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),),
@@ -299,7 +308,6 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                 TextFormField(
-                                                    autofocus: true,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Opis", 
@@ -321,7 +329,6 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                 TextFormField(
-                                                    autofocus: true,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Przewidywany czas", 
@@ -341,11 +348,116 @@ class _MainAdminState extends State<MainAdmin> {
                                                         borderSide: BorderSide(color: Colors.purple)
                                                       )
                                                     ),
-                                                  ), 
+                                                  ),
+                                                 TextFormField(
+                                                    cursorColor: Colors.purple[300],
+                                                    decoration: InputDecoration(
+                                                      labelText: "Cena", 
+                                                      hintText: "Wpisz cene za usługe.",
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: "Raleway"
+                                                      ),
+                                                      labelStyle: TextStyle(
+                                                        fontFamily: "Raleway",
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.purple[300]
+                                                      ), 
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      ),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      )
+                                                    ),
+                                                  ),
+                                                 TextFormField(
+                                                    cursorColor: Colors.purple[300],
+                                                    decoration: InputDecoration(
+                                                      labelText: "Kategoria", 
+                                                      hintText: "Wpisz dokładnie nazwe kategorii",
+                                                      hintStyle: TextStyle(
+                                                        fontFamily: "Raleway"
+                                                      ),
+                                                      labelStyle: TextStyle(
+                                                        fontFamily: "Raleway",
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Colors.purple[300]
+                                                      ), 
+                                                      border: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      ),
+                                                      focusedBorder: UnderlineInputBorder(
+                                                        borderSide: BorderSide(color: Colors.purple)
+                                                      )
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 10.0,), 
                                                   RaisedButton(
+                                                    color: Colors.purple[300],
+                                                    elevation: 0.0,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(30.0)
+                                                    ),
                                                     onPressed: () => print(categoryList),
-                                                    child: Text("adadadadada"),
-                                                  )
+                                                    child: Text(
+                                                      "Dodaj", 
+                                                      style: TextStyle(
+                                                        fontFamily: "Raleway", 
+                                                        color: Colors.white, 
+                                                        fontWeight: FontWeight.w600
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    child: Row(
+                                                      children: <Widget>[
+                                                       Flexible(child: Text(
+                                                         "Pamiętaj, aby dokładnie przepisać nazwe kategorii!", 
+                                                         textAlign: TextAlign.center,
+                                                         style: TextStyle(
+                                                           color: Colors.red[300],
+                                                           fontFamily: "Raleway",
+                                                           fontWeight: FontWeight.w600,
+                                                           fontSize: 11.0,
+                                                         ),
+                                                       )),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 20.0,),
+                                                  Container(
+                                                    width: 300.0,
+                                                    height: 40.0,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      boxShadow: [
+                                                        BoxShadow(blurRadius: 10.0, spreadRadius: 7.0, color: Colors.black38, offset: Offset(0, 5))
+                                                      ],
+                                                      borderRadius: BorderRadius.circular(30.0)
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          "Kategorie",
+                                                          textAlign: TextAlign.center, 
+                                                          style: TextStyle(
+                                                          fontFamily: "Raleway", 
+                                                        ),)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(height: 20.0,),
+                                                  Container(
+                                                    height: 200.0,
+                                                    child: FirebaseAnimatedList(
+                                                      query: _firebaseDatabase,
+                                                      itemBuilder: (context, snapshot, animation, index) {
+                                                        Map category = snapshot.value;
+                                                        return _buildCategory(category: category);
+                                                      }, 
+                                                    ),  
+                                                  ),
                                                 ],
                                               ),
                                             ),

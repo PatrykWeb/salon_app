@@ -32,6 +32,7 @@ class _HomeMenuState extends State<HomeMenu> {
       child: Column(
         children: <Widget>[
           Card(
+            elevation: 5.0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0)
             ),
@@ -40,7 +41,7 @@ class _HomeMenuState extends State<HomeMenu> {
               children: <Widget>[
                 ListTile(
                   leading: Icon(
-                    Icons.category, 
+                    Icons.import_contacts, 
                     color: Colors.white,
                   ),
                   title: Text(
@@ -72,8 +73,9 @@ class _HomeMenuState extends State<HomeMenu> {
                   child: Text(
                     "Zabiegi z tej kategorii", 
                     style: TextStyle(
-                      color: Colors.black, 
-                      fontFamily: "Raleway"
+                      color: Colors.purple[300], 
+                      fontFamily: "Raleway",
+                      fontWeight: FontWeight.w600
                     ),
                   ),
                 )
@@ -237,6 +239,7 @@ class _HomeMenuState extends State<HomeMenu> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Card(
+                            elevation: 5.0,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0)),
                             color: Colors.purple[300],
