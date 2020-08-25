@@ -1,7 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:salon_app/services/auth_service.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainAdmin extends StatefulWidget {
   MainAdmin({Key key}) : super(key: key);
@@ -12,12 +14,13 @@ class MainAdmin extends StatefulWidget {
 
 class _MainAdminState extends State<MainAdmin> {
   dynamic categoryList;
+  Map<dynamic, dynamic> checkCategoryList;
   final _formKey = GlobalKey<FormState>();
   AuthService _authService = AuthService();
   final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
-  String category, categoryDesc;
+  String category, categoryDesc, productTextForm, descProductTextForm, categoryTextForm;
+  int priceTextForm, timeTextForm;
   dynamic i;
-
 
     Widget _buildCategory({Map category}) {
     return Container(
@@ -45,17 +48,15 @@ class _MainAdminState extends State<MainAdmin> {
     Future giveCategoryRecords() async {
       _firebaseDatabase.once().then((DataSnapshot snaphot) {
       Map<dynamic, dynamic> values = snaphot.value;
-      // for(i in values) {
-      //   setState(() {
-      //     categoryList = i;
-      //   });
-      // }
-    
-      //   // values.forEach((key, value) {
-      //   //   setState(() {
-      //   //     categoryList = key;
-      //   //   });
-      //   // });
+      setState(() {
+        checkCategoryList = values;
+      });
+        // values.forEach((key, value) {
+        //  setState(() {
+        //     checkCategoryList = key;
+        //     print(key);
+        //   });
+        // });
     });
   }
 
@@ -286,6 +287,12 @@ class _MainAdminState extends State<MainAdmin> {
                                                 children: <Widget>[
                                                   Padding(padding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),),
                                                   TextFormField(
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        productTextForm = value;
+                                                      });
+                                                    },
+                                                    validator: (value) => value.isEmpty ? "Wpisz nazwe produktu" : null,
                                                     autofocus: true,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
@@ -308,10 +315,16 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                 TextFormField(
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        descProductTextForm = value;
+                                                      });
+                                                    },
+                                                    validator: (value) => value.isEmpty ? "Wpisz opis produktu" : null,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Opis", 
-                                                      hintText: "Nazwa produktu",
+                                                      hintText: "Opis produktu",
                                                       hintStyle: TextStyle(
                                                         fontFamily: "Raleway"
                                                       ),
@@ -329,6 +342,13 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                 TextFormField(
+                                                    keyboardType: TextInputType.number,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        timeTextForm = int.parse(value);
+                                                      });
+                                                    },
+                                                    validator: (value) => value.isEmpty ? "Wpisz przewidywany czas usługi" : null,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Przewidywany czas", 
@@ -350,6 +370,12 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                  TextFormField(
+                                                   onChanged: (value) {
+                                                     setState(() {
+                                                       priceTextForm = int.parse(value);
+                                                     });
+                                                   },
+                                                   validator: (value) => value.isEmpty ? "Wpisz cene produktu" : null,
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Cena", 
@@ -371,6 +397,12 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                  TextFormField(
+                                                   onChanged: (value) {
+                                                     setState(() {
+                                                       categoryTextForm = value;
+                                                     });
+                                                   },
+                                                   validator: (value) => value.isEmpty ? "Musisz przypisać produkt do kategorii" : null, 
                                                     cursorColor: Colors.purple[300],
                                                     decoration: InputDecoration(
                                                       labelText: "Kategoria", 
@@ -398,7 +430,25 @@ class _MainAdminState extends State<MainAdmin> {
                                                     shape: RoundedRectangleBorder(
                                                       borderRadius: BorderRadius.circular(30.0)
                                                     ),
-                                                    onPressed: () => print(categoryList),
+                                                    onPressed: () {
+                                                      if(_formKey.currentState.validate()) {
+                                                        checkCategoryList.forEach((key, value) {
+                                                          if(value["Category"] == categoryTextForm) {
+                                                            final result = _authService.addProduct(categoryTextForm, productTextForm, descProductTextForm, timeTextForm, priceTextForm);
+                                                            if(result == null) {
+                                                              print("Nie udało ci sie dodać rekordu");
+                                                            } else {
+                                                              _formKey.currentState.reset();
+                                                              print("Udało ci się dodać rekord");
+                                                            }
+                                                            Fluttertoast.showToast(msg: "Dodałeś poprawnie kategorie ${categoryTextForm.toString()}", toastLength: Toast.LENGTH_LONG, textColor: Colors.white, backgroundColor: Colors.purple[300]);
+                                                            print("Dane sie zgadzaja");
+                                                          } else {
+                                                            return null;
+                                                          }
+                                                        });
+                                                      }
+                                                    },
                                                     child: Text(
                                                       "Dodaj", 
                                                       style: TextStyle(
@@ -430,10 +480,10 @@ class _MainAdminState extends State<MainAdmin> {
                                                     height: 40.0,
                                                     decoration: BoxDecoration(
                                                       color: Colors.white,
-                                                      boxShadow: [
-                                                        BoxShadow(blurRadius: 10.0, spreadRadius: 7.0, color: Colors.black38, offset: Offset(0, 5))
-                                                      ],
-                                                      borderRadius: BorderRadius.circular(30.0)
+                                                      // boxShadow: [
+                                                      //   BoxShadow(blurRadius: 5.0, spreadRadius: 1.0, color: Colors.black38, offset: Offset(0, 5))
+                                                      // ],
+                                                      // borderRadius: BorderRadius.circular(30.0)
                                                     ),
                                                     child: Column(
                                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -442,12 +492,13 @@ class _MainAdminState extends State<MainAdmin> {
                                                           "Kategorie",
                                                           textAlign: TextAlign.center, 
                                                           style: TextStyle(
-                                                          fontFamily: "Raleway", 
+                                                          fontFamily: "Raleway",
+                                                          fontWeight: FontWeight.w600 
                                                         ),)
                                                       ],
                                                     ),
                                                   ),
-                                                  SizedBox(height: 20.0,),
+                                                  // SizedBox(height: 10.0,),
                                                   Container(
                                                     height: 200.0,
                                                     child: FirebaseAnimatedList(

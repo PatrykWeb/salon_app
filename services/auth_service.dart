@@ -74,4 +74,13 @@ class AuthService {
       "Description": categoryDesc
     });
   }
+  Future addProduct(String category, String product, String productDesc, int timeProduct, int priceProduct) async {
+    _firebaseDatabase.child("Category").child(category).child("Products").child(product).set({
+      "productName": product, 
+      "productDesc": productDesc, 
+      "timeProduct": timeProduct, 
+      "priceProduct": priceProduct, 
+      "category": category
+    });
+  }
 }
