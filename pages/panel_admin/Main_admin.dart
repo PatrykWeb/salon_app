@@ -51,12 +51,6 @@ class _MainAdminState extends State<MainAdmin> {
       setState(() {
         checkCategoryList = values;
       });
-        // values.forEach((key, value) {
-        //  setState(() {
-        //     checkCategoryList = key;
-        //     print(key);
-        //   });
-        // });
     });
   }
 
@@ -342,7 +336,7 @@ class _MainAdminState extends State<MainAdmin> {
                                                     ),
                                                   ),
                                                 TextFormField(
-                                                    keyboardType: TextInputType.number,
+                                                    // keyboardType: TextInputType.number,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         timeTextForm = int.parse(value);
@@ -579,6 +573,194 @@ class _MainAdminState extends State<MainAdmin> {
                 )
               ]
             ),
+            SizedBox(height: 20.0,),
+          Column(
+            children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30), 
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(50.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)
+                      ),
+                      color: Colors.purple[300],
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            onTap: () {},
+                            title: Text(
+                              "Dodaj pracownika", 
+                              style: TextStyle(
+                                color: Colors.white, 
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            subtitle: Text(
+                              "Dodaj pracownika do swojej firmy!", 
+                              style: TextStyle(
+                                color: Colors.white54, 
+                                fontFamily: "Raleway"
+                              ),
+                            ),
+                            leading: Icon(
+                              Icons.person_add, 
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Przewiń palcem w dół", 
+                          style: TextStyle(
+                            fontFamily: "Raleway", 
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600, 
+                            color: Colors.black54
+                          ),
+                        ),
+                        SizedBox(width: 4.0,),
+                        Icon(
+                          Icons.expand_more, 
+                          size: 35.0,
+                          color: Colors.black54,
+                        )
+                      ],
+                    ),
+                  ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "Przewijając w dół, sprawdzisz statystyki aplikacji", 
+                      style: TextStyle(
+                        fontFamily: "Raleway", 
+                        color: Colors.black45, 
+                        fontSize: 12.0, 
+                        fontWeight: FontWeight.w600
+                      ),
+                    )
+                  ],
+                ),
+                 SizedBox(height: 20.0,),
+                  Card(
+                    color: Colors.purple[300],
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        const ListTile(
+                          contentPadding: EdgeInsets.only(top: 1.0, left: 10.0),
+                          leading: Icon(
+                            Icons.card_membership,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            'Liczba produktów', 
+                            style: TextStyle(
+                              color: Colors.white, 
+                              fontFamily: "Raleway",
+                              fontWeight: FontWeight.w600 
+                            ),
+                          ),
+                          subtitle: Text(
+                            '50', 
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.white60, 
+                              // fontFamily: "Raleway",
+                              fontSize: 30.0
+                            ),
+                          ),
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.white60
+                              )
+                            )
+                          ),
+                          child: ListTile(
+                          contentPadding: EdgeInsets.only(top: 1.0, left: 10.0),
+                          leading: Icon(
+                            Icons.call_split,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            'Liczba kategorii', 
+                            style: TextStyle(
+                              color: Colors.white, 
+                              fontFamily: "Raleway", 
+                              fontWeight: FontWeight.w600
+                            ),
+                          ),
+                          subtitle: Text(
+                            '10', 
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.white60, 
+                              // fontFamily: "Raleway",
+                              fontSize: 30.0
+                            ),
+                          ),
+                        ),  
+                        ),
+                      Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(
+                                color: Colors.white60
+                              )
+                            )
+                          ),
+                          child: ListTile(
+                          contentPadding: EdgeInsets.only(top: 1.0, left: 10.0),
+                          leading: Icon(
+                            Icons.group,
+                            color: Colors.white,
+                          ),
+                          title: Text(
+                            'Liczba klientów', 
+                            style: TextStyle(
+                              color: Colors.white, 
+                              fontFamily: "Raleway", 
+                              fontWeight: FontWeight.w600
+                            ),
+                          ),
+                          subtitle: Text(
+                            '60', 
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.white60, 
+                              // fontFamily: "Raleway",
+                              fontSize: 30.0
+                            ),
+                          ),
+                        ),  
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              )
+            ],
+            )
           ],
         ),
       ),

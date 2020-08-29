@@ -192,7 +192,9 @@ class _HomeMenuState extends State<HomeMenu> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MainAdmin()));
                   Fluttertoast.showToast(
-                      msg: "Zalogowałeś się do panelu administratora");
+                      msg: "Zalogowałeś się do panelu administratora", 
+                      backgroundColor: Colors.purple[300]
+                      );
                 } else {
                   print("Nie masz uprawnien");
                 }
