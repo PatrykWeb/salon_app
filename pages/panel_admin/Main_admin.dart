@@ -19,7 +19,7 @@ class _MainAdminState extends State<MainAdmin> {
   AuthService _authService = AuthService();
   final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
   String category, categoryDesc, productTextForm, descProductTextForm, categoryTextForm;
-  int priceTextForm, timeTextForm;
+  int priceTextForm, timeTextForm, lenghtCategory;
   dynamic i;
 
     Widget _buildCategory({Map category}) {
@@ -48,8 +48,10 @@ class _MainAdminState extends State<MainAdmin> {
     Future giveCategoryRecords() async {
       _firebaseDatabase.once().then((DataSnapshot snaphot) {
       Map<dynamic, dynamic> values = snaphot.value;
+      print(values.length);
       setState(() {
         checkCategoryList = values;
+        lenghtCategory = values.length;
       });
     });
   }
@@ -585,7 +587,7 @@ class _MainAdminState extends State<MainAdmin> {
               child: Column(
                 children: <Widget>[
                   Container(
-                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                    // padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0)
@@ -619,6 +621,41 @@ class _MainAdminState extends State<MainAdmin> {
                       ),
                     ),
                   ),
+                   Container(
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)
+                      ),
+                      color: Colors.purple[300],
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            onTap: () {},
+                            title: Text(
+                              "Dodaj managera", 
+                              style: TextStyle(
+                                color: Colors.white, 
+                                fontFamily: "Raleway",
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            subtitle: Text(
+                              "Dodaj managera do swojej firmy!", 
+                              style: TextStyle(
+                                color: Colors.white54, 
+                                fontFamily: "Raleway"
+                              ),
+                            ),
+                            leading: Icon(
+                              Icons.supervised_user_circle, 
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0,),
                   Container(
                     alignment: Alignment.topCenter,
                     child: Row(
@@ -710,7 +747,7 @@ class _MainAdminState extends State<MainAdmin> {
                             ),
                           ),
                           subtitle: Text(
-                            '10', 
+                            lenghtCategory.toString(), 
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               color: Colors.white60, 

@@ -23,8 +23,9 @@ class AuthService {
           email: email, password: password);
       FirebaseUser user = result.user;
       _firebaseDatabase.child("Users").child(user.uid).set({
+        "uid": user.uid, 
         "nameSurname": nameSurname, 
-        "number": number, 
+        "number": number,
         "managment": false, 
         "manager": false, 
         "employee": false, 

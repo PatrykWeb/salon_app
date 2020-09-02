@@ -18,7 +18,8 @@ class HomeMenu extends StatefulWidget {
 }
 
 class _HomeMenuState extends State<HomeMenu> {
-  final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users");
+  final FirebaseAuth authUid = FirebaseAuth.instance;
+
   final _firebaseCategory = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
   String nameCompany, registerServices, employeeSectionNameJson, detailsSectionNameJson, scrollRightText, scrollRightDetails;
   dynamic getName;
@@ -26,6 +27,8 @@ class _HomeMenuState extends State<HomeMenu> {
   String checkBoughtService;
   String getNameBoughtService, nameBoughtService, employeeSectionName;
   dynamic ifNoPermissionManagment, employeeSectionIcon;
+
+  AuthService authService = AuthService();
 
   Widget _categoryBuilder({Map category, index}) {
     return Container(
@@ -104,55 +107,11 @@ class _HomeMenuState extends State<HomeMenu> {
       scrollRightDetails = words.scrollRightDetails;
     });
   }
-
-  Future getDateDatabase() async {
-    firebaseDatabase.once().then((DataSnapshot snapshot) {
-      Map<dynamic, dynamic> values = snapshot.value;
-      values.forEach((key, value) {
-        setState(() {
-          getName = value["nameSurname"];
-          getCheckBoughtService = value["boughtService"];
-          getCheckManagment = value["managment"];
-          getCheckEmployee = value["employee"];
-        });
-        if (!getCheckBoughtService) {
-          setState(() {
-            checkBoughtService = "Nie jesteś aktualnie zarejestrowany";
-            nameBoughtService = "Nie zarejestrowany";
-          });
-        } else {
-          setState(() {
-            checkBoughtService = "Jesteś zarejestrowany na godzine: ";
-            nameBoughtService = value["serviceBoughtName"];
-          });
-        }
-        if (!getCheckManagment) {
-          setState(() {
-            ifNoPermissionManagment = Colors.white;
-          });
-        } else {
-          setState(() {
-            ifNoPermissionManagment = Colors.purple[300];
-          });
-        }
-        if (getCheckEmployee) {
-          setState(() {
-            employeeSectionName = employeeSectionNameJson.toString();
-            employeeSectionIcon = Icons.explicit;
-          });
-        } else if (getCheckManagment) {
-          setState(() {
-            employeeSectionName = employeeSectionNameJson.toString();
-            employeeSectionIcon = Icons.explicit;
-          });
-        } else {
-          setState(() {
-            employeeSectionName = detailsSectionNameJson.toString();
-            employeeSectionIcon = Icons.category;
-          });
-        }
-      });
-    });
+  
+  Future<DataSnapshot> getDateDatabase() async {
+    var user = await FirebaseAuth.instance.currentUser();
+    final firebaseDatabase = FirebaseDatabase.instance.reference().child("Users").child(user.uid);
+    return await firebaseDatabase.once();
   }
 
   // Future checkPermissions() async {
@@ -169,8 +128,6 @@ class _HomeMenuState extends State<HomeMenu> {
     getWord();
     getDateDatabase();
   }
-
-  AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -240,88 +197,125 @@ class _HomeMenuState extends State<HomeMenu> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Card(
-                            elevation: 5.0,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            color: Colors.purple[300],
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Text(
-                                  registerServices.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Raleway",
-                                    fontSize: 16.0,
-                                    // fontWeight: FontWeight.bold,
-                                  ),
+                          FutureBuilder(
+                            future: getDateDatabase(),
+                            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                              if(snapshot.hasData) {
+                                  getName = snapshot.data.value["nameSurname"];
+                                  getCheckBoughtService = snapshot.data.value["boughtService"];
+                                  getCheckManagment = snapshot.data.value["managment"];
+                                  getCheckEmployee = snapshot.data.value["employee"];
+                                  print(getCheckManagment);
+                                if (!getCheckBoughtService) {
+                                    checkBoughtService = "Nie jesteś aktualnie zarejestrowany";
+                                    nameBoughtService = "Nie zarejestrowany";
+                                } else {
+                                    checkBoughtService = "Jesteś zarejestrowany na godzine: ";
+                                    nameBoughtService = snapshot.data.value["serviceBoughtName"];
+                                }
+                                if (getCheckEmployee) {
+                                    employeeSectionName = employeeSectionNameJson.toString();
+                                    employeeSectionIcon = Icons.explicit;
+                                } else if (getCheckManagment) {
+                                    employeeSectionName = employeeSectionNameJson.toString();
+                                    employeeSectionIcon = Icons.explicit;
+                                    ifNoPermissionManagment = Colors.purple[300];
+                                } else {
+                                    employeeSectionName = detailsSectionNameJson.toString();
+                                    employeeSectionIcon = Icons.category;
+                                    ifNoPermissionManagment = Colors.white;
+                                }
+                              }
+                              return Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Card(
+                                      elevation: 5.0,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30.0)),
+                                      color: Colors.purple[300],
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          Text(
+                                            registerServices.toString(),
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontFamily: "Raleway",
+                                              fontSize: 16.0,
+                                              // fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          ListTile(
+                                            leading: Icon(
+                                              Icons.event,
+                                              color: Colors.white,
+                                            ),
+                                            title: Text(
+                                              nameBoughtService.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Raleway",
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            contentPadding: EdgeInsets.all(30.0),
+                                            subtitle: Text(
+                                              checkBoughtService.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white60,
+                                                  fontFamily: "Raleway"),
+                                            ),
+                                          ),
+                                          RaisedButton.icon(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(30.0)),
+                                            onPressed: () {
+                                              if (getCheckManagment) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MainEmployee(),
+                                                    ));
+                                              } else if (getCheckEmployee) {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MainEmployee(),
+                                                    ));
+                                              } else {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) => Register(),
+                                                    ));
+                                              }
+                                            },
+                                            padding:
+                                                EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
+                                            icon: Icon(
+                                              employeeSectionIcon,
+                                              color: Colors.purple[300],
+                                            ),
+                                            label: Text(
+                                              employeeSectionName.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.purple[300],
+                                                  fontFamily: "Raleway",
+                                                  fontSize: 16.0),
+                                            ),
+                                            color: Colors.white,
+                                            elevation: 0.0,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                ListTile(
-                                  leading: Icon(
-                                    Icons.event,
-                                    color: Colors.white,
-                                  ),
-                                  title: Text(
-                                    nameBoughtService.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Raleway",
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  contentPadding: EdgeInsets.all(30.0),
-                                  subtitle: Text(
-                                    checkBoughtService.toString(),
-                                    style: TextStyle(
-                                        color: Colors.white60,
-                                        fontFamily: "Raleway"),
-                                  ),
-                                ),
-                                RaisedButton.icon(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () {
-                                    if (getCheckManagment) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MainEmployee(),
-                                          ));
-                                    } else if (getCheckEmployee) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                MainEmployee(),
-                                          ));
-                                    } else {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Register(),
-                                          ));
-                                    }
-                                  },
-                                  padding:
-                                      EdgeInsets.fromLTRB(60.0, 0.0, 60.0, 0.0),
-                                  icon: Icon(
-                                    employeeSectionIcon,
-                                    color: Colors.purple[300],
-                                  ),
-                                  label: Text(
-                                    employeeSectionName.toString(),
-                                    style: TextStyle(
-                                        color: Colors.purple[300],
-                                        fontFamily: "Raleway",
-                                        fontSize: 16.0),
-                                  ),
-                                  color: Colors.white,
-                                  elevation: 0.0,
-                                )
-                              ],
-                            ),
+                              );
+                            },
                           ),
                         ],
                       )),
