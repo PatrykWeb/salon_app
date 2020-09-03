@@ -26,7 +26,7 @@ class _HomeMenuState extends State<HomeMenu> {
   bool getCheckBoughtService, getCheckManagment, getCheckEmployee;
   String checkBoughtService;
   String getNameBoughtService, nameBoughtService, employeeSectionName;
-  dynamic ifNoPermissionManagment, employeeSectionIcon;
+  dynamic employeeSectionIcon;
 
   AuthService authService = AuthService();
 
@@ -139,11 +139,14 @@ class _HomeMenuState extends State<HomeMenu> {
               size: 30.0,
               color: Colors.purple[300],
             ),
-            onPressed: () => authService.logOut(),
+            onPressed: () => authService.logOut()
           ),
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.font_download),
+              icon: Icon(
+                Icons.font_download,
+                color: Colors.purple[300],
+              ),
               onPressed: () {
                 if (getCheckManagment) {
                   Navigator.push(context,
@@ -153,10 +156,14 @@ class _HomeMenuState extends State<HomeMenu> {
                       backgroundColor: Colors.purple[300]
                       );
                 } else {
-                  print("Nie masz uprawnien");
+                  Fluttertoast.showToast(
+                    msg: "Nie posiadasz uprawnień!", 
+                    backgroundColor: Colors.purple[300], 
+                    toastLength: Toast.LENGTH_SHORT
+                  );
                 }
               },
-              color: ifNoPermissionManagment,
+              color: Colors.purple[300],
             ),
           ],
           title: Text(
@@ -219,11 +226,9 @@ class _HomeMenuState extends State<HomeMenu> {
                                 } else if (getCheckManagment) {
                                     employeeSectionName = employeeSectionNameJson.toString();
                                     employeeSectionIcon = Icons.explicit;
-                                    ifNoPermissionManagment = Colors.purple[300];
                                 } else {
                                     employeeSectionName = detailsSectionNameJson.toString();
                                     employeeSectionIcon = Icons.category;
-                                    ifNoPermissionManagment = Colors.white;
                                 }
                               }
                               return Container(

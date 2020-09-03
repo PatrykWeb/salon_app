@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:salon_app/pages/Home.dart';
 import 'package:salon_app/pages/Login.dart';
+import 'package:salon_app/pages/menu_homepage/Home_menu.dart';
 import 'dart:convert';
 import 'package:salon_app/services/auth_service.dart';
 import 'package:salon_app/words/models.dart';
@@ -72,7 +74,7 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.purple[300],
         centerTitle: true,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 150.0, 30.0, 0.0),
         child: Form(
           key: _formKey,
@@ -190,14 +192,7 @@ class _RegisterState extends State<Register> {
                       });
                     } else {
                       print("Zarejestrowałeś sie poprawnie");
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => Login()),
-                      );
-                      Fluttertoast.showToast(
-                          msg: notificationRegister.toString(),
-                          backgroundColor: Colors.purple[300],
-                          toastLength: Toast.LENGTH_SHORT);
+                      Navigator.pop(context, new MaterialPageRoute(builder: (context) => Home()));
                     }
                   }
                 },

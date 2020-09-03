@@ -67,7 +67,7 @@ class _LoginState extends State<Login> {
         backgroundColor: Colors.purple[300],
         centerTitle: true,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(30.0, 210.0, 30.0, 0.0),
         child: Form(
           key: _formKey,
