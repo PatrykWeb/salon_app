@@ -18,7 +18,7 @@ class _MainAdminState extends State<MainAdmin> {
   final _formKey = GlobalKey<FormState>();
   AuthService _authService = AuthService();
   final _firebaseDatabase = FirebaseDatabase.instance.reference().child("Category").orderByChild("Category");
-  String category, categoryDesc, productTextForm, descProductTextForm, categoryTextForm;
+  String category, categoryDesc, productTextForm, descProductTextForm, categoryTextForm, uidManager;
   int priceTextForm, timeTextForm, lenghtCategory;
   dynamic i;
 
@@ -596,7 +596,96 @@ class _MainAdminState extends State<MainAdmin> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                context: context, 
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(17.0)
+                                    ),
+                                    child: SingleChildScrollView(
+                                      padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                      // height: 200.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              children: <Widget>[
+                                                TextFormField(
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      uidManager = value;
+                                                    });
+                                                  },
+                                                  validator: (value) => value.isEmpty ? "Nie podałeś UID" : null,
+                                                  cursorColor: Colors.purple[300],
+                                                  autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    hintText: "Podaj UID", 
+                                                    labelText: "UID",
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Raleway"
+                                                    ),
+                                                    labelStyle: TextStyle(
+                                                      color: Colors.purple[300],
+                                                      fontFamily: "Raleway",
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                    border: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple[300])
+                                                    ),
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple[300])
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20.0,),
+                                                Text(
+                                                  "Aby dodać nowego pracownika, poproś go o podanie swojego UID, który znajdzie na profilu.", 
+                                                  style: TextStyle(
+                                                    fontFamily: "Raleway", 
+                                                    color: Colors.black45
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20.0,),
+                                                RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20.0)
+                                                  ),
+                                                  padding: EdgeInsets.only(left: 105.0, right: 105.0),
+                                                  elevation: 0.0,
+                                                  child: Text(
+                                                    "Dodaj", 
+                                                    style: TextStyle(
+                                                      color: Colors.white, 
+                                                      fontFamily: "Raleway", 
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    if(_formKey.currentState.validate()) {
+                                                      final result = _authService.addEmployee(uidManager);
+                                                      if(result == false) {
+                                                        print("Jest null");
+                                                      } else {
+                                                        print("test");
+                                                      }
+                                                    }
+                                                  },
+                                                  color: Colors.purple[300],
+                                                )
+                                              ],
+                                            )
+                                          )
+                                        ],
+                                      )
+                                    ),
+                                  );
+                                } 
+                              );
+                            },
                             title: Text(
                               "Dodaj pracownika", 
                               style: TextStyle(
@@ -630,7 +719,94 @@ class _MainAdminState extends State<MainAdmin> {
                       child: Column(
                         children: <Widget>[
                           ListTile(
-                            onTap: () {},
+                            onTap: () {
+                              showDialog(
+                                context: context, 
+                                builder: (BuildContext context) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(17.0)
+                                    ),
+                                    child: SingleChildScrollView(
+                                      padding: EdgeInsets.fromLTRB(30.0, 5.0, 30.0, 0.0),
+                                      // height: 200.0,
+                                      child: Column(
+                                        children: <Widget>[
+                                          Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              children: <Widget>[
+                                                TextFormField(
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      uidManager = value;
+                                                    });
+                                                  },
+                                                  validator: (value) => value.isEmpty ? "Nie podałeś UID" : null,
+                                                  cursorColor: Colors.purple[300],
+                                                  autofocus: true,
+                                                  decoration: InputDecoration(
+                                                    hintText: "Podaj UID", 
+                                                    labelText: "UID",
+                                                    hintStyle: TextStyle(
+                                                      fontFamily: "Raleway"
+                                                    ),
+                                                    labelStyle: TextStyle(
+                                                      color: Colors.purple[300],
+                                                      fontFamily: "Raleway",
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                    border: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple[300])
+                                                    ),
+                                                    focusedBorder: UnderlineInputBorder(
+                                                      borderSide: BorderSide(color: Colors.purple[300])
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20.0,),
+                                                Text(
+                                                  "Aby dodać nowego managera, poproś go o podanie swojego UID, który znajdzie na profilu.", 
+                                                  style: TextStyle(
+                                                    fontFamily: "Raleway", 
+                                                    color: Colors.black45
+                                                  ),
+                                                ),
+                                                SizedBox(height: 20.0,),
+                                                RaisedButton(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20.0)
+                                                  ),
+                                                  padding: EdgeInsets.only(left: 105.0, right: 105.0),
+                                                  elevation: 0.0,
+                                                  child: Text(
+                                                    "Dodaj", 
+                                                    style: TextStyle(
+                                                      color: Colors.white, 
+                                                      fontFamily: "Raleway", 
+                                                      fontWeight: FontWeight.w600
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    if(_formKey.currentState.validate()) {
+                                                      final result = _authService.addManager(uidManager);
+                                                      if(result == null) {
+                                                        
+                                                      }
+                                                    }
+                                                  },
+                                                  color: Colors.purple[300],
+                                                )
+                                              ],
+                                            )
+                                          )
+                                        ],
+                                      )
+                                    ),
+                                  );
+                                } 
+                              );
+                            },
                             title: Text(
                               "Dodaj managera", 
                               style: TextStyle(

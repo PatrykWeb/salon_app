@@ -1,7 +1,11 @@
+import 'dart:async';
+
+import 'package:countdown_flutter/countdown_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:salon_app/models/User.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class AuthService {
@@ -26,6 +30,7 @@ class AuthService {
         "uid": user.uid, 
         "nameSurname": nameSurname, 
         "number": number,
+        "email": email,
         "managment": false, 
         "manager": false, 
         "employee": false, 
@@ -82,6 +87,37 @@ class AuthService {
       "timeProduct": timeProduct, 
       "priceProduct": priceProduct, 
       "category": category
+    });
+  }
+    Future addEmployee(String uid) async {
+    _firebaseDatabase.child("Users").once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, value) {
+        if(value["uid"] == uid) {
+         _firebaseDatabase.child("Users").child(uid).update({
+              "employee": true
+          });
+        } else {
+          print('Nie ma takiego uid');
+          return null;
+        }
+       });
+    });
+  }
+
+  Future addManager(String uid) async {
+    _firebaseDatabase.child("Users").once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, value) {
+        if(value["uid"] == uid) {
+         _firebaseDatabase.child("Users").child(uid).update({
+              "manager": true
+          });
+        } else {
+          print('Nie ma takiego uid');
+          return null;
+        }
+       });
     });
   }
 }
