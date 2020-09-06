@@ -375,7 +375,7 @@ class _HomeMenuState extends State<HomeMenu> {
                         query: _firebaseCategory,
                         itemBuilder: (context, snapshot, animation, index) {
                           Map category = snapshot.value;
-                          int indexCategory = index.sign;
+                          int indexCategory = index;
                           return _categoryBuilder(category: category, index: indexCategory);
                         }, 
                       ),
